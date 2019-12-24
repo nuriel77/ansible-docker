@@ -38,12 +38,12 @@
 
 - name: rasbpian override repository configuration
   set_fact:
-    docker_apt_repository: "deb [arch={{ hornet_arch }}] https://download.docker.com/linux/raspbian {{ ansible_distribution_release }} {{ docker_build | default('stable') }}"
+    docker_apt_repository: "deb [arch={{ server_arch }}] https://download.docker.com/linux/raspbian {{ ansible_distribution_release }} {{ docker_build | default('stable') }}"
   when: ansible_lsb.id == 'Raspbian'
 
 - name: architecture override repository configuration
   set_fact:
-    docker_apt_repository: "deb [arch={{ hornet_arch }}] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} {{ docker_build | default('stable') }}"
+    docker_apt_repository: "deb [arch={{ server_arch }}] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} {{ docker_build | default('stable') }}"
   when: ansible_lsb.id != 'Raspbian'
 
 - name: ensure old line with edge is gone
