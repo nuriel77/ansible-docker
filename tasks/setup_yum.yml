@@ -23,14 +23,14 @@
     group: root
     mode: 0644
 
-- name: Configure Docker Edge repo.
+- name: Configure Docker repository
   ini_file:
     dest: '/etc/yum.repos.d/docker-{{ docker_edition }}.repo'
     section: 'docker-{{ docker_edition }}-edge'
     option: enabled
     value: '{{ docker_yum_repo_enable_edge }}'
 
-- name: Configure Docker Test repo.
+- name: Configure Docker Test repository
   ini_file:
     dest: '/etc/yum.repos.d/docker-{{ docker_edition }}.repo'
     section: 'docker-{{ docker_edition }}-test'
