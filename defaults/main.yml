@@ -5,10 +5,8 @@ centos_packages:
     - lvm2
   ver7:
     - policycoreutils-python
-    - python-pip
   ver8:
     - python3-policycoreutils
-    - python3-pip
 
 # Edition can be 'ce' (Community Edition) or 'ee' (Enterprise Edition).
 docker_edition: 'ce'
