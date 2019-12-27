@@ -1,0 +1,33 @@
+- package:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - apt-transport-https
+      - ca-certificates
+      - software-properties-common
+
+- name: get docker script
+  get_url:
+    url: "https://get.docker.com"
+    dest: "/root/get-docker.sh"
+  register: got_docker_script
+
+- name: "run get docker script, please wait..."
+  shell: "sh /root/get-docker.sh"
+  when: got_docker_script.changed
+
+- name: add user pi to docker group
+  user:
+    name: pi
+    groups: docker
+    append: yes
+
+- name: rasbpian override repository configuration
+  set_fact:
+    docker_apt_repository: "deb [arch={{ server_arch }}] https://download.docker.com/linux/raspbian {{ ansible_distribution_release }} {{ docker_build | default('stable') }}"
+
+- name: update packages
+  apt:
+    name: "*"
+    state: latest
+    update_cache: yes

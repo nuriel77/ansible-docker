@@ -1,8 +1,14 @@
+- name: "Install Docker on Raspbian via script"
+  import_tasks: raspbian.yml
+  when: ansible_lsb.id == 'Raspbian'
+
 - name: "Install Docker Debian/Ubuntu ..."
   package:
     name: "{{ docker_package }}"
     state: "{{ docker_package_state }}"
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  when:
+    - ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+    - ansible_lsb.id != 'Raspbian'
 
 - name: "Install Docker Centos 7 ..."
   yum:

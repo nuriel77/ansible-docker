@@ -35,24 +35,22 @@
     warn: no
   when: add_repository_key is failed
 
-- name: rasbpian override repository configuration
-  set_fact:
-    docker_apt_repository: "deb [arch={{ server_arch }}] https://download.docker.com/linux/raspbian {{ ansible_distribution_release }} {{ docker_build | default('stable') }}"
-  when: ansible_lsb.id == 'Raspbian'
-
-- name: architecture override repository configuration
-  set_fact:
-    docker_apt_repository: "deb [arch={{ server_arch }}] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} {{ docker_build | default('stable') }}"
+- name: Debian/Ubuntu
   when: ansible_lsb.id != 'Raspbian'
+  block:
 
-- name: ensure old line with edge is gone
-  lineinfile:
-    state: absent
-    path: '/etc/apt/sources.list.d/download_docker_com_linux_ubuntu.list'
-    regexp: '^deb https://download.docker.com/linux/ubuntu bionic edge'
+    - name: architecture override repository configuration
+      set_fact:
+        docker_apt_repository: "deb [arch={{ server_arch }}] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} {{ docker_build | default('stable') }}"
 
-- name: Add Docker repository.
-  apt_repository:
-    repo: "{{ docker_apt_repository }}"
-    state: present
-    update_cache: yes
+    - name: ensure old line with edge is gone
+      lineinfile:
+        state: absent
+        path: '/etc/apt/sources.list.d/download_docker_com_linux_ubuntu.list'
+        regexp: '^deb https://download.docker.com/linux/ubuntu bionic edge'
+
+    - name: Add Docker repository.
+      apt_repository:
+        repo: "{{ docker_apt_repository }}"
+        state: present
+        update_cache: yes
