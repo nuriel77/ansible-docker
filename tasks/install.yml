@@ -24,6 +24,14 @@
   args:
     warn: no
 
+- name: ensure docker directory exists
+  file:
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+    path: /etc/docker
+
 - name: add docker configuration
   template:
     src: templates/daemon.json.j2
