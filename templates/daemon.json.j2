@@ -1,0 +1,9 @@
+{
+  "log-driver": "{{ docker_log_driver }}",
+{% if docker_log_driver == "local" %}
+  "log-opts": {
+    "max-size": "{{ docker_log_driver_syslog_max_size | default('100m') }}"
+  },
+{% endif %}
+  "live-restore": {{ docker_live_restore_enabled | default(True) | bool | lower | string }}
+}

@@ -24,6 +24,13 @@
   args:
     warn: no
 
+- name: add docker configuration
+  template:
+    src: templates/daemon.json.j2
+    dest: /etc/docker/daemon.json
+  notify:
+    - reload docker
+
 - name: Ensure Docker is started and enabled
   service:
     name: docker
